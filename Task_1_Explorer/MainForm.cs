@@ -38,6 +38,7 @@ namespace Task_1_Explorer
             this.AddFoldersRecursively(this.treeView.Nodes);
 
             //this.treeView.Nodes.Add(node1);
+            ////
 
             foreach (TreeNode item in this.treeView.Nodes)
             {
