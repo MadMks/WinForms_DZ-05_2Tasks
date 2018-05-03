@@ -55,7 +55,7 @@
             this.Controls.Add(this.listView);
             this.Controls.Add(this.treeView);
             this.Name = "MainForm";
-            this.Text = "Проводник";
+            this.Text = "Проводникк";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ResumeLayout(false);
 
