@@ -33,6 +33,7 @@ namespace Task_1_Explorer
                 }
             }
 
+            // Запускаем рекурсивное добавление папок в каждом диске.
             foreach (TreeNode rootNode in this.treeView.Nodes)
             {
                 this.AddFoldersRecursively(rootNode, rootNode.FullPath);
@@ -40,6 +41,11 @@ namespace Task_1_Explorer
 
         }
 
+        /// <summary>
+        /// Добавление в treeView имен папок (рекурсивно).
+        /// </summary>
+        /// <param name="rootNode"></param>
+        /// <param name="path"></param>
         private void AddFoldersRecursively(TreeNode rootNode, string path)
         {
             TreeNode parentNode;
