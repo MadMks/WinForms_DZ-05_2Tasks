@@ -29,47 +29,71 @@ namespace Task_1_Explorer
                     node = new TreeNode(item.Name);
 
                     this.treeView.Nodes.Add(node);
+
+
+                    
                 }
             }
 
+            foreach (TreeNode rootNode in this.treeView.Nodes)
+            {
+                this.AddFoldersRecursively(rootNode, rootNode.FullPath);
+            }
 
             //TreeNode node1 = new TreeNode("1");
 
-            this.AddFoldersRecursively(this.treeView.Nodes);
+
 
             //this.treeView.Nodes.Add(node1);
             ////
 
-            foreach (TreeNode item in this.treeView.Nodes)
-            {
+            //foreach (TreeNode item in this.treeView.Nodes)
+            //{
 
-            }
+            //}
         }
 
-        private void AddFoldersRecursively(TreeNodeCollection nodes)
+        private void AddFoldersRecursively(TreeNode rootNode, string path)
         {
-            TreeNode node;
+            //TreeNode parentNode = new TreeNode();
+            TreeNode parentNode;
 
-            foreach (TreeNode item1 in nodes)
+
+            foreach (string folderFullPath in Directory.GetDirectories(path))
             {
-                foreach (string item2 in Directory.EnumerateDirectories(item1.FullPath))
-                {
-                    node = new TreeNode(item2);
+                //parentNode.Text = ;
+                DirectoryInfo dirInfo = new DirectoryInfo(folderFullPath);
+                //parentNode.Text = dirInfo.Name;
+                //if (Directory.Exists(folderFullPath) == true)
+                //{
+                    parentNode = new TreeNode(Path.GetFileName(folderFullPath));
 
-                    item1.Nodes.Add(node);
-                }
+                    rootNode.Nodes.Add(parentNode);
 
-                foreach (TreeNode item4 in item1.Nodes)
-                {
-                    foreach (string item3 in Directory.EnumerateDirectories(item4.FullPath))
-                    {
-                        node = new TreeNode(item3);
-
-                        item4.Nodes.Add(node);
-                    }
-                }
-                
+                    this.AddFoldersRecursively(parentNode, folderFullPath);
+                //}
             }
+
+            //foreach (TreeNode item1 in nodes)
+            //{
+            //    foreach (string item2 in Directory.EnumerateDirectories(item1.FullPath))
+            //    {
+            //        node = new TreeNode(item2);
+
+            //        item1.Nodes.Add(node);
+            //    }
+
+            //    foreach (TreeNode item4 in item1.Nodes)
+            //    {
+            //        foreach (string item3 in Directory.EnumerateDirectories(item4.FullPath))
+            //        {
+            //            node = new TreeNode(item3);
+
+            //            item4.Nodes.Add(node);
+            //        }
+            //    }
+                
+            //}
         }
     }
 }
