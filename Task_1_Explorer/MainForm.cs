@@ -28,8 +28,8 @@ namespace Task_1_Explorer
             this.treeView.NodeMouseClick += TreeView_NodeMouseClick;
 
 
-            this.listView.LargeImageList = this.imageList;
-            this.listView.View = View.Tile;
+            this.listView.SmallImageList = this.imageList;
+            this.listView.View = View.SmallIcon;
             //this.listView.StateImageList.Images = 
         }
 
