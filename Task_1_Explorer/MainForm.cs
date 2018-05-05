@@ -20,26 +20,50 @@ namespace Task_1_Explorer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //TreeNode node;
-
-            //// Записываю в дерево доступные логические диски.
-            //foreach (DriveInfo item in DriveInfo.GetDrives())
-            //{
-            //    if (item.IsReady == true)
-            //    {
-            //        node = new TreeNode(item.Name);
-            //        this.AddFoldersRecursively(node, item.Name, 0);//-
-            //        this.treeView.Nodes.Add(node);  
-            //    }
-            //}
-
             this.treeView.BeforeSelect += TreeView_BeforeSelect;
             this.treeView.BeforeExpand += TreeView_BeforeExpand;
 
             this.FillWithLogicalDisks();
+
+            this.treeView.NodeMouseClick += TreeView_NodeMouseClick;
+
+
+            this.listView.LargeImageList = this.imageList;
+            this.listView.View = View.Tile;
+            //this.listView.StateImageList.Images = 
         }
 
-        
+        private void TreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            try
+            {
+                this.listView.Items.Clear();
+
+                foreach (
+                    string filePath in Directory.EnumerateFileSystemEntries(e.Node.FullPath)
+                    )
+                {
+                    Icon iconForFile = SystemIcons.WinLogo;
+
+                    ListViewItem listItem = new ListViewItem(Path.GetFileName(filePath));
+                    FileInfo fileInfo = new FileInfo(filePath);
+
+                    if (this.imageList.Images.ContainsKey(fileInfo.Extension) == false)
+                    {
+                        iconForFile = Icon.ExtractAssociatedIcon(filePath);
+                        this.imageList.Images.Add(fileInfo.Extension, iconForFile);
+                    }
+
+                    listItem.ImageKey = fileInfo.Extension;
+
+                    this.listView.Items.Add(listItem);
+                }
+            }
+            catch (Exception) {}
+            
+        }
+
+
 
 
         /// <summary>
@@ -57,6 +81,7 @@ namespace Task_1_Explorer
                 }
             }
         }
+
 
         /// <summary>
         /// Заполняем дочерними папками(узлами), для определенного узла(логического диска).
@@ -77,7 +102,7 @@ namespace Task_1_Explorer
         }
 
         /// <summary>
-        /// Обработчик события при выборе узла.
+        /// Обработчик события перед выбором узла.
         /// </summary>
         private void TreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
