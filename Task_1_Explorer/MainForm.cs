@@ -49,7 +49,6 @@ namespace Task_1_Explorer
                 if (drive.IsReady == true)
                 {
                     TreeNode driveNode = new TreeNode(drive.Name);
-                    // TODO заполнить дочерними папками(узлами), для определенного узла.
                     this.FillChildNodes(driveNode, drive.Name);
                     this.treeView.Nodes.Add(driveNode);
                 }
@@ -57,9 +56,9 @@ namespace Task_1_Explorer
         }
 
         /// <summary>
-        /// Заполняем дочерними папками(узлами), для определенного узла.
+        /// Заполняем дочерними папками(узлами), для определенного узла(логического диска).
         /// </summary>
-        /// <param name="driveNode">TODO</param>
+        /// <param name="driveNode">Node логического диска.</param>
         /// <param name="path">Путь узла который нужно заполнить дочерними узлами.</param>
         private void FillChildNodes(TreeNode driveNode, string path)
         {
@@ -71,7 +70,7 @@ namespace Task_1_Explorer
                     driveNode.Nodes.Add(dirNode);
                 }
             }
-            catch (Exception) {}
+            catch (Exception ex) {}
         }
 
         /// <summary>
@@ -79,7 +78,29 @@ namespace Task_1_Explorer
         /// </summary>
         private void TreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            //throw new NotImplementedException();
+            // Чистка ноды перед открытием.
+            e.Node.Nodes.Clear();
+
+            string[] dirs;
+
+            try
+            {
+                if (Directory.Exists(e.Node.FullPath) == true)
+                {
+                    dirs = Directory.GetDirectories(e.Node.FullPath);
+
+                    if (dirs.Length > 0)
+                    {
+                        foreach (string dir in dirs)
+                        {
+                            TreeNode dirNode = new TreeNode(Path.GetFileName(dir));
+                            this.FillChildNodes(dirNode, dir);
+                            e.Node.Nodes.Add(dirNode);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex){}
         }
 
         /// <summary>
