@@ -33,10 +33,13 @@ namespace Task_1_Explorer
             //    }
             //}
 
+            this.treeView.BeforeSelect += TreeView_BeforeSelect;
             this.treeView.BeforeExpand += TreeView_BeforeExpand;
 
             this.FillWithLogicalDisks();
         }
+
+        
 
 
         /// <summary>
@@ -74,11 +77,25 @@ namespace Task_1_Explorer
         }
 
         /// <summary>
+        /// Обработчик события при выборе узла.
+        /// </summary>
+        private void TreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        {
+            this.FillingNodeBeforeSelectionAndOpening(e);
+        }
+
+        /// <summary>
         /// Обработчик события перед раскрытием узла.
         /// </summary>
         private void TreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            // Чистка ноды перед открытием.
+            this.FillingNodeBeforeSelectionAndOpening(e);
+        }
+
+        private void FillingNodeBeforeSelectionAndOpening(TreeViewCancelEventArgs e)
+        {
+            // Чистка ноды (перд открытием, или при выборе)
+            // для удаления старых записей.
             e.Node.Nodes.Clear();
 
             string[] dirs;
@@ -100,50 +117,8 @@ namespace Task_1_Explorer
                     }
                 }
             }
-            catch (Exception ex){}
+            catch (Exception ex) { }
         }
-
-        /// <summary>
-        /// Добавление в treeView имен папок (рекурсивно).
-        /// </summary>
-        /// <param name="rootNode"></param>
-        /// <param name="path"></param>
-        //private void AddFoldersRecursively(TreeNode rootNode, string path, int nestingLevel)
-        //{
-        //    if (nestingLevel > 5)
-        //    {
-        //        return;
-        //    }
-
-
-        //    TreeNode parentNode;
-
-
-        //    foreach (string folderFullPath in Directory.GetDirectories(path))
-        //    {
-        //        nestingLevel++;
-
-        //        DirectoryInfo dirInfo = new DirectoryInfo(folderFullPath);
-
-        //        if (dirInfo.GetType().IsVisible == true)
-        //        {
-
-        //            try
-        //            {
-        //                parentNode = new TreeNode(Path.GetFileName(folderFullPath));
-
-        //                rootNode.Nodes.Add(parentNode);
-
-        //                this.AddFoldersRecursively(parentNode, folderFullPath, nestingLevel);
-        //            }
-        //            catch {}
-
-        //        }
-        //    }
-
-
-        //}
-
 
 
     }
