@@ -14,8 +14,8 @@ namespace Task_1_Explorer
 {
     public partial class MainForm : Form
     {
-        ImageList large;
-        ImageList small;
+        private ImageList large;
+        private ImageList small;
 
         public MainForm()
         {
@@ -24,34 +24,34 @@ namespace Task_1_Explorer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            //this.treeView.BeforeSelect += TreeView_BeforeSelect;
             this.treeView.BeforeExpand += TreeView_BeforeExpand;
 
             this.FillWithLogicalDisks();
 
-            large = this.imageList;
-            
-            small = this.imageList;
+            this.imageList.ColorDepth = ColorDepth.Depth32Bit;
 
+            large = this.imageList;
+            small = this.imageList;
             
             // TODO FIX HACK !!!
             this.listView.SmallImageList = small;
             this.listView.LargeImageList = large;
-
-            large.ImageSize = new Size(64, 64);
-            small.ImageSize = new Size(32, 32);
-            //this.listView.View = View.SmallIcon;
+            
             this.listView.View = View.List;
-            //this.listView.StateImageList.Images = 
 
 
-            //////this.treeView.SelectedNode = this.treeView.Nodes[0];
             this.treeView.AfterSelect += TreeView_AfterSelect;
 
 
         }
 
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            this.FillListView(e.Node.FullPath);
+            
+        }
+
+        private void FillListView(string fullPath)
         {
             try
             {
@@ -60,7 +60,7 @@ namespace Task_1_Explorer
                 this.imageList.Images.Add("folder.png", Resources.folder);
 
                 this.listView.Items.Clear();
-                DirectoryInfo nodeDirInfo = new DirectoryInfo(e.Node.FullPath);
+                DirectoryInfo nodeDirInfo = new DirectoryInfo(fullPath);
 
 
                 foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories())
@@ -76,13 +76,8 @@ namespace Task_1_Explorer
                     this.listView.Items.Add(file.Name, file.Name);
                 }
             }
-            catch (Exception) {}
-            
+            catch (Exception) { }
         }
-
-
-
-
 
 
         /// <summary>
@@ -120,14 +115,7 @@ namespace Task_1_Explorer
             catch (Exception ex) {}
         }
 
-        /// <summary>
-        /// Обработчик события перед выбором узла.
-        /// </summary>
-        //private void TreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-        //{
-        //    //this.FillingNodeBeforeSelectionAndOpening(e);
-        //    // HACK убрать - чтоб при сворачивании показывало диск в котором были.
-        //}
+
 
         /// <summary>
         /// Обработчик события перед раскрытием узла.
@@ -168,14 +156,10 @@ namespace Task_1_Explorer
         private void largeIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
             large.ImageSize = new Size(64, 64);
-            //this.listView.LargeImageList.ImageSize = new Size(64, 64);
             this.listView.LargeImageList = large;
             this.listView.View = View.LargeIcon;
-            
-            //this.listView.LargeImageList.Images.Clear();
-            //this.listView.LargeImageList = this.imageList;
-            
 
+            this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
         private void smallIconToolStripMenuItem_Click(object sender, EventArgs e)
@@ -183,22 +167,71 @@ namespace Task_1_Explorer
             small.ImageSize = new Size(32, 32);
             this.listView.SmallImageList = small;
             this.listView.View = View.SmallIcon;
-            //this.listView.SmallImageList.ImageSize = new Size(32, 32);
+
+            this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
         private void tileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            small.ImageSize = new Size(20, 20);
+            this.listView.SmallImageList = small;
             this.listView.View = View.Tile;
+
+            this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
         private void listToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            small.ImageSize = new Size(16, 16);
+            this.listView.SmallImageList = small;
             this.listView.View = View.List;
+
+            this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
         private void detailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            small.ImageSize = new Size(12, 12);
+            this.listView.SmallImageList = small;
             this.listView.View = View.Details;
+
+            this.FillListView(this.treeView.SelectedNode.FullPath);
+
+            this.listView.Columns.Add("Имя");
+            listView.Columns[0].Width = 200;
+            this.listView.Columns.Add("Дата изменения");
+            listView.Columns[1].Width = 100;
+            this.listView.Columns.Add("Размер");
+            listView.Columns[1].Width = 100;
+
+
+            int i = 0;
+            foreach (ListViewItem item in this.listView.Items)
+            {
+                //item.SubItems.Add(this.listView.Items[i++].Text.ToString());
+
+                //DirectoryInfo dirInfo = new DirectoryInfo(this.listView.Items[i++].Text.ToString());
+                FileInfo fileInfo = new FileInfo(this.listView.Items[i++].Text.ToString());
+                //DateTime dt = File.GetLastWriteTime(dirInfo.Name);
+
+                try
+                {
+                    item.SubItems.Add(fileInfo.Length.ToString());
+                }
+                catch (Exception)
+                {
+
+                    
+                }
+                
+            }
+
+            //for (int i = 0; i < this.listView.Items.Count; i++)
+            //{
+            //    this.listView
+            //}
         }
+
+
     }
 }
