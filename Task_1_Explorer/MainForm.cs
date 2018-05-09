@@ -48,6 +48,7 @@ namespace Task_1_Explorer
             //////this.treeView.SelectedNode = this.treeView.Nodes[0];
             this.treeView.AfterSelect += TreeView_AfterSelect;
 
+
         }
 
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -167,7 +168,8 @@ namespace Task_1_Explorer
         private void largeIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
             large.ImageSize = new Size(64, 64);
-            this.listView.LargeImageList.ImageSize = new Size(64, 64);
+            //this.listView.LargeImageList.ImageSize = new Size(64, 64);
+            this.listView.LargeImageList = large;
             this.listView.View = View.LargeIcon;
             
             //this.listView.LargeImageList.Images.Clear();
@@ -178,6 +180,8 @@ namespace Task_1_Explorer
 
         private void smallIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            small.ImageSize = new Size(32, 32);
+            this.listView.SmallImageList = small;
             this.listView.View = View.SmallIcon;
             //this.listView.SmallImageList.ImageSize = new Size(32, 32);
         }
