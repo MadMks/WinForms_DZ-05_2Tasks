@@ -8,11 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Task_1_Explorer.Properties;
 
 namespace Task_1_Explorer
 {
     public partial class MainForm : Form
     {
+        ImageList large;
+        ImageList small;
+
         public MainForm()
         {
             InitializeComponent();
@@ -20,48 +24,62 @@ namespace Task_1_Explorer
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.treeView.BeforeSelect += TreeView_BeforeSelect;
+            //this.treeView.BeforeSelect += TreeView_BeforeSelect;
             this.treeView.BeforeExpand += TreeView_BeforeExpand;
 
             this.FillWithLogicalDisks();
 
-            this.treeView.NodeMouseClick += TreeView_NodeMouseClick;
+            large = this.imageList;
+            
+            small = this.imageList;
 
+            
+            // TODO FIX HACK !!!
+            this.listView.SmallImageList = small;
+            this.listView.LargeImageList = large;
 
-            this.listView.SmallImageList = this.imageList;
-            this.listView.View = View.SmallIcon;
+            large.ImageSize = new Size(64, 64);
+            small.ImageSize = new Size(32, 32);
+            //this.listView.View = View.SmallIcon;
+            this.listView.View = View.List;
             //this.listView.StateImageList.Images = 
+
+
+            //////this.treeView.SelectedNode = this.treeView.Nodes[0];
+            this.treeView.AfterSelect += TreeView_AfterSelect;
+
         }
 
-        private void TreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             try
             {
+                this.imageList.Images.Clear();  // чтоб не смещались соотношения картинок.
+                                                // TODO нужно вручную добавить картинку папки.
+                this.imageList.Images.Add("folder.png", Resources.folder);
+
                 this.listView.Items.Clear();
+                DirectoryInfo nodeDirInfo = new DirectoryInfo(e.Node.FullPath);
 
-                foreach (
-                    string filePath in Directory.EnumerateFileSystemEntries(e.Node.FullPath)
-                    )
+
+                foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories())
                 {
-                    Icon iconForFile = SystemIcons.WinLogo;
+                    DirectoryInfo dirInfo = new DirectoryInfo(dir.Name);
+                    this.listView.Items.Add(dirInfo.Name, "folder.png");
+                }
 
-                    ListViewItem listItem = new ListViewItem(Path.GetFileName(filePath));
-                    FileInfo fileInfo = new FileInfo(filePath);
-
-                    if (this.imageList.Images.ContainsKey(fileInfo.Extension) == false)
-                    {
-                        iconForFile = Icon.ExtractAssociatedIcon(filePath);
-                        this.imageList.Images.Add(fileInfo.Extension, iconForFile);
-                    }
-
-                    listItem.ImageKey = fileInfo.Extension;
-
-                    this.listView.Items.Add(listItem);
+                foreach (FileInfo file in nodeDirInfo.GetFiles())
+                {
+                    FileInfo fileInfo = new FileInfo(file.Name);
+                    this.imageList.Images.Add(file.Name, Icon.ExtractAssociatedIcon(file.FullName));
+                    this.listView.Items.Add(file.Name, file.Name);
                 }
             }
             catch (Exception) {}
             
         }
+
+
 
 
 
@@ -104,20 +122,21 @@ namespace Task_1_Explorer
         /// <summary>
         /// Обработчик события перед выбором узла.
         /// </summary>
-        private void TreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-        {
-            this.FillingNodeBeforeSelectionAndOpening(e);
-        }
+        //private void TreeView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
+        //{
+        //    //this.FillingNodeBeforeSelectionAndOpening(e);
+        //    // HACK убрать - чтоб при сворачивании показывало диск в котором были.
+        //}
 
         /// <summary>
         /// Обработчик события перед раскрытием узла.
         /// </summary>
         private void TreeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            this.FillingNodeBeforeSelectionAndOpening(e);
+            this.FillingNodeBeforeSelection(e);
         }
 
-        private void FillingNodeBeforeSelectionAndOpening(TreeViewCancelEventArgs e)
+        private void FillingNodeBeforeSelection(TreeViewCancelEventArgs e)
         {
             // Чистка ноды (перд открытием, или при выборе)
             // для удаления старых записей.
@@ -145,6 +164,37 @@ namespace Task_1_Explorer
             catch (Exception ex) { }
         }
 
+        private void largeIconToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            large.ImageSize = new Size(64, 64);
+            this.listView.LargeImageList.ImageSize = new Size(64, 64);
+            this.listView.View = View.LargeIcon;
+            
+            //this.listView.LargeImageList.Images.Clear();
+            //this.listView.LargeImageList = this.imageList;
+            
 
+        }
+
+        private void smallIconToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.listView.View = View.SmallIcon;
+            //this.listView.SmallImageList.ImageSize = new Size(32, 32);
+        }
+
+        private void tileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.listView.View = View.Tile;
+        }
+
+        private void listToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.listView.View = View.List;
+        }
+
+        private void detailsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.listView.View = View.Details;
+        }
     }
 }
