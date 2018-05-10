@@ -226,10 +226,19 @@ namespace Task_1_Explorer
                 
             }
 
-            //for (int i = 0; i < this.listView.Items.Count; i++)
-            //{
-            //    this.listView
-            //}
+            #region HACK up code
+            if (textBox1.Text != "") {
+				DirectoryInfo dirsInfo = new DirectoryInfo(textBox1.Text);
+				
+				foreach (DirectoryInfo element in dirsInfo.GetDirectories()) {
+					listBox1.Items.Add(element.LastWriteTime.ToString());
+				}
+				
+				foreach (FileInfo element in dirsInfo.GetFiles()) {
+					listBox1.Items.Add(element.LastWriteTime.ToString());
+				}
+			}
+            #endregion
         }
 
 
