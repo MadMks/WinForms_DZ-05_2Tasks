@@ -14,8 +14,9 @@ namespace Task_1_Explorer
 {
     public partial class MainForm : Form
     {
-        private ImageList large;
-        private ImageList small;
+        private ImageList largeList;
+        private ImageList smallList;
+
 
         public MainForm()
         {
@@ -25,24 +26,28 @@ namespace Task_1_Explorer
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.treeView.BeforeExpand += TreeView_BeforeExpand;
-
-            this.FillWithLogicalDisks();
-
-            this.imageList.ColorDepth = ColorDepth.Depth32Bit;
-
-            large = this.imageList;
-            small = this.imageList;
-            
-            // TODO FIX HACK !!!
-            this.listView.SmallImageList = small;
-            this.listView.LargeImageList = large;
-            
-            this.listView.View = View.List;
-
-
             this.treeView.AfterSelect += TreeView_AfterSelect;
 
 
+            this.FillWithLogicalDisks();
+
+
+            this.imageList.ColorDepth = ColorDepth.Depth32Bit;
+
+            largeList = this.imageList;
+            smallList = this.imageList;
+            
+            this.listView.SmallImageList = smallList;
+            this.listView.LargeImageList = largeList;
+
+            smallList.ImageSize = new Size(24, 24);
+            this.listView.View = View.Tile;
+
+            this.listView.Columns.Add("Имя");
+            this.listView.Columns.Add("Дата изменения");
+            this.listView.Columns.Add("Размер");
+
+            this.listView.FullRowSelect = true;
         }
 
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -56,27 +61,58 @@ namespace Task_1_Explorer
             try
             {
                 this.imageList.Images.Clear();  // чтоб не смещались соотношения картинок.
-                                                // TODO нужно вручную добавить картинку папки.
+                // Добавляем картинку для папок.
                 this.imageList.Images.Add("folder.png", Resources.folder);
-
+                // Чистим listView перед заполнением.
                 this.listView.Items.Clear();
+
                 DirectoryInfo nodeDirInfo = new DirectoryInfo(fullPath);
-
-
+                
                 foreach (DirectoryInfo dir in nodeDirInfo.GetDirectories())
                 {
-                    DirectoryInfo dirInfo = new DirectoryInfo(dir.Name);
-                    this.listView.Items.Add(dirInfo.Name, "folder.png");
+                    this.listView.Items.Add(dir.Name, "folder.png");
+                    
+                    this.listView.Items[this.listView.Items.Count - 1]
+                        .SubItems.Add(dir.LastWriteTime.ToString());
                 }
 
                 foreach (FileInfo file in nodeDirInfo.GetFiles())
                 {
-                    FileInfo fileInfo = new FileInfo(file.Name);
-                    this.imageList.Images.Add(file.Name, Icon.ExtractAssociatedIcon(file.FullName));
+                    if (this.IsFileTheImage(file) == true)
+                    {
+                        this.imageList.Images.Add(
+                            file.Name, Image.FromFile(file.FullName));
+                    }
+                    else
+                    {
+                        this.imageList.Images.Add(
+                            file.Name, Icon.ExtractAssociatedIcon(file.FullName));
+                    }
+
                     this.listView.Items.Add(file.Name, file.Name);
+
+                    this.listView.Items[this.listView.Items.Count - 1]
+                        .SubItems.Add(file.LastWriteTime.ToString());
+                    this.listView.Items[this.listView.Items.Count - 1]
+                        .SubItems.Add((file.Length / 1024).ToString() + " КБ");
                 }
+                
             }
             catch (Exception) { }
+        }
+
+        private bool IsFileTheImage(FileInfo file)
+        {
+            if (file.Extension == ".jpg"
+                || file.Extension == ".jpeg"
+                || file.Extension == ".png")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 
@@ -155,8 +191,8 @@ namespace Task_1_Explorer
 
         private void largeIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            large.ImageSize = new Size(64, 64);
-            this.listView.LargeImageList = large;
+            largeList.ImageSize = new Size(64, 64);
+            this.listView.LargeImageList = largeList;
             this.listView.View = View.LargeIcon;
 
             this.FillListView(this.treeView.SelectedNode.FullPath);
@@ -164,8 +200,8 @@ namespace Task_1_Explorer
 
         private void smallIconToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            small.ImageSize = new Size(32, 32);
-            this.listView.SmallImageList = small;
+            smallList.ImageSize = new Size(32, 32);
+            this.listView.SmallImageList = smallList;
             this.listView.View = View.SmallIcon;
 
             this.FillListView(this.treeView.SelectedNode.FullPath);
@@ -173,8 +209,8 @@ namespace Task_1_Explorer
 
         private void tileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            small.ImageSize = new Size(20, 20);
-            this.listView.SmallImageList = small;
+            smallList.ImageSize = new Size(24, 24);
+            this.listView.SmallImageList = smallList;
             this.listView.View = View.Tile;
 
             this.FillListView(this.treeView.SelectedNode.FullPath);
@@ -182,63 +218,27 @@ namespace Task_1_Explorer
 
         private void listToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            small.ImageSize = new Size(16, 16);
-            this.listView.SmallImageList = small;
+            smallList.ImageSize = new Size(16, 16);
+            this.listView.SmallImageList = smallList;
             this.listView.View = View.List;
+
+            
 
             this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
         private void detailsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            small.ImageSize = new Size(12, 12);
-            this.listView.SmallImageList = small;
+            smallList.ImageSize = new Size(12, 12);
+            this.listView.SmallImageList = smallList;
             this.listView.View = View.Details;
 
-            this.FillListView(this.treeView.SelectedNode.FullPath);
 
-            this.listView.Columns.Add("Имя");
             listView.Columns[0].Width = 200;
-            this.listView.Columns.Add("Дата изменения");
-            listView.Columns[1].Width = 100;
-            this.listView.Columns.Add("Размер");
-            listView.Columns[1].Width = 100;
+            listView.Columns[1].Width = 150;
+            listView.Columns[2].Width = 150;
 
-
-            int i = 0;
-            foreach (ListViewItem item in this.listView.Items)
-            {
-                //item.SubItems.Add(this.listView.Items[i++].Text.ToString());
-
-                //DirectoryInfo dirInfo = new DirectoryInfo(this.listView.Items[i++].Text.ToString());
-                FileInfo fileInfo = new FileInfo(this.listView.Items[i++].Text.ToString());
-                //DateTime dt = File.GetLastWriteTime(dirInfo.Name);
-
-                try
-                {
-                    item.SubItems.Add(fileInfo.Length.ToString());
-                }
-                catch (Exception)
-                {
-
-                    
-                }
-                
-            }
-
-            #region HACK up code
-            if (textBox1.Text != "") {
-				DirectoryInfo dirsInfo = new DirectoryInfo(textBox1.Text);
-				
-				foreach (DirectoryInfo element in dirsInfo.GetDirectories()) {
-					listBox1.Items.Add(element.LastWriteTime.ToString());
-				}
-				
-				foreach (FileInfo element in dirsInfo.GetFiles()) {
-					listBox1.Items.Add(element.LastWriteTime.ToString());
-				}
-			}
-            #endregion
+            this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
 
