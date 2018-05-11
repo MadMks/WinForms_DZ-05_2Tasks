@@ -58,6 +58,10 @@ namespace Task_1_Explorer
             this.labelTextFileOrDir.Text = "";
 
             this.labelNumberFilesInFolder.Text = "";
+
+            this.labelDateCreateValue.Text = "";
+            this.labelDateChangeValue.Text = "";
+            this.labelSizeFileValue.Text = "";
         }
 
         private void FillListView(string fullPath)
@@ -273,15 +277,35 @@ namespace Task_1_Explorer
                     {
                         this.labelTextFileOrDir.Text = "Файл";
                         this.labelNumberFilesInFolder.Text = "";
+
+                        FileInfo fileInfo = new FileInfo(fullPath);
+                        this.labelSizeFileValue.Text
+                            = (fileInfo.Length / 1024).ToString() + " КБ";
                     }
 
+                    this.labelDateCreateValue.Text
+                        = Directory.GetCreationTime(fullPath).ToString();
+                    this.labelDateChangeValue.Text
+                        = Directory.GetLastWriteTime(fullPath).ToString();
+                }
+                else if (this.listView.SelectedItems.Count > 1)
+                {
+                    this.labelTextFileOrDir.Text = "";
+                    this.labelNumberFilesInFolder.Text = "";
 
+                    this.labelDateCreateValue.Text = "";
+                    this.labelDateChangeValue.Text = "";
+                    this.labelSizeFileValue.Text = "";
 
-                    //this.labelName.Text = fullPath.Replace(@"\\", @"\");
+                    this.labelNameFileOrDir.Text
+                        = "Выбрано элементов: "
+                        + this.listView.SelectedItems.Count.ToString();
                 }
             }
             catch (Exception) {}
             
         }
+
+
     }
 }
