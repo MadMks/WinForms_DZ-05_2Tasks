@@ -41,6 +41,7 @@
             this.listToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.labelNameFileOrDir = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -64,6 +65,7 @@
             this.listView.Size = new System.Drawing.Size(490, 550);
             this.listView.TabIndex = 1;
             this.listView.UseCompatibleStateImageBehavior = false;
+            this.listView.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
             // 
             // imageList
             // 
@@ -140,10 +142,19 @@
             // 
             // splitContainer.Panel2
             // 
+            this.splitContainer.Panel2.Controls.Add(this.labelNameFileOrDir);
             this.splitContainer.Panel2.Controls.Add(this.listView);
             this.splitContainer.Size = new System.Drawing.Size(741, 651);
             this.splitContainer.SplitterDistance = 247;
             this.splitContainer.TabIndex = 3;
+            // 
+            // labelNameFileOrDir
+            // 
+            this.labelNameFileOrDir.AutoSize = true;
+            this.labelNameFileOrDir.Location = new System.Drawing.Point(21, 557);
+            this.labelNameFileOrDir.Name = "labelNameFileOrDir";
+            this.labelNameFileOrDir.Size = new System.Drawing.Size(0, 13);
+            this.labelNameFileOrDir.TabIndex = 2;
             // 
             // MainForm
             // 
@@ -160,6 +171,7 @@
             this.menuStrip1.PerformLayout();
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
+            this.splitContainer.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -180,6 +192,7 @@
         private System.Windows.Forms.ToolStripMenuItem listToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer;
+        private System.Windows.Forms.Label labelNameFileOrDir;
     }
 }
 

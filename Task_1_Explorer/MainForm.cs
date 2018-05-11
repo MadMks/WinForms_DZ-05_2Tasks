@@ -241,6 +241,20 @@ namespace Task_1_Explorer
             this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
+        private void listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.listView.Items.Count != 0)
+            {
+                this.labelNameFileOrDir.Text = this.listView.SelectedItems[this.listView.SelectedItems.Count - 1].Text;
+
+                //foreach (ListView item in this.listView.SelectedItems)
+                //{
+
+                //}
+                
+            }
+        }
+
 
     }
 }
