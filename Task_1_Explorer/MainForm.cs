@@ -53,7 +53,11 @@ namespace Task_1_Explorer
         private void TreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
             this.FillListView(e.Node.FullPath);
-            
+
+            this.labelNameFileOrDir.Text = "";
+            this.labelTextFileOrDir.Text = "";
+
+            this.labelNumberFilesInFolder.Text = "";
         }
 
         private void FillListView(string fullPath)
@@ -241,20 +245,43 @@ namespace Task_1_Explorer
             this.FillListView(this.treeView.SelectedNode.FullPath);
         }
 
-        private void listView_SelectedIndexChanged(object sender, EventArgs e)
+        private void listView_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            if (this.listView.Items.Count != 0)
+            try
             {
-                this.labelNameFileOrDir.Text = this.listView.SelectedItems[this.listView.SelectedItems.Count - 1].Text;
+                if (this.listView.SelectedItems.Count == 1)
+                {
+                    this.labelNameFileOrDir.Text = this.listView.SelectedItems[0].Text;
 
-                //foreach (ListView item in this.listView.SelectedItems)
-                //{
+                    // Получаем полный путь (к файлу или папке).
+                    string fullPath
+                        = this.treeView.SelectedNode.FullPath
+                        + @"\"
+                        + this.listView.SelectedItems[0].Text;
 
-                //}
-                
+                    // Выводим данные.
+                    if (Directory.Exists(fullPath) == true)
+                    {
+                        this.labelTextFileOrDir.Text = "Папка с файлами";
+
+                        string[] files = Directory.GetFiles(fullPath);
+                        this.labelNumberFilesInFolder.Text 
+                            = "Кол-во файлов: "
+                            + files.Length.ToString();
+                    }
+                    else
+                    {
+                        this.labelTextFileOrDir.Text = "Файл";
+                        this.labelNumberFilesInFolder.Text = "";
+                    }
+
+
+
+                    //this.labelName.Text = fullPath.Replace(@"\\", @"\");
+                }
             }
+            catch (Exception) {}
+            
         }
-
-
     }
 }

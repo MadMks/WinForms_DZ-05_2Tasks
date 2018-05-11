@@ -41,7 +41,9 @@
             this.listToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
+            this.labelTextFileOrDir = new System.Windows.Forms.Label();
             this.labelNameFileOrDir = new System.Windows.Forms.Label();
+            this.labelNumberFilesInFolder = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -65,7 +67,7 @@
             this.listView.Size = new System.Drawing.Size(490, 550);
             this.listView.TabIndex = 1;
             this.listView.UseCompatibleStateImageBehavior = false;
-            this.listView.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
+            this.listView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView_ItemSelectionChanged);
             // 
             // imageList
             // 
@@ -98,35 +100,35 @@
             // largeIconToolStripMenuItem
             // 
             this.largeIconToolStripMenuItem.Name = "largeIconToolStripMenuItem";
-            this.largeIconToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.largeIconToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.largeIconToolStripMenuItem.Text = "LargeIcon";
             this.largeIconToolStripMenuItem.Click += new System.EventHandler(this.largeIconToolStripMenuItem_Click);
             // 
             // smallIconToolStripMenuItem
             // 
             this.smallIconToolStripMenuItem.Name = "smallIconToolStripMenuItem";
-            this.smallIconToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.smallIconToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.smallIconToolStripMenuItem.Text = "SmallIcon";
             this.smallIconToolStripMenuItem.Click += new System.EventHandler(this.smallIconToolStripMenuItem_Click);
             // 
             // tileToolStripMenuItem
             // 
             this.tileToolStripMenuItem.Name = "tileToolStripMenuItem";
-            this.tileToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tileToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.tileToolStripMenuItem.Text = "Tile";
             this.tileToolStripMenuItem.Click += new System.EventHandler(this.tileToolStripMenuItem_Click);
             // 
             // listToolStripMenuItem
             // 
             this.listToolStripMenuItem.Name = "listToolStripMenuItem";
-            this.listToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.listToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.listToolStripMenuItem.Text = "List";
             this.listToolStripMenuItem.Click += new System.EventHandler(this.listToolStripMenuItem_Click);
             // 
             // detailsToolStripMenuItem
             // 
             this.detailsToolStripMenuItem.Name = "detailsToolStripMenuItem";
-            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.detailsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.detailsToolStripMenuItem.Text = "Details";
             this.detailsToolStripMenuItem.Click += new System.EventHandler(this.detailsToolStripMenuItem_Click);
             // 
@@ -142,19 +144,40 @@
             // 
             // splitContainer.Panel2
             // 
+            this.splitContainer.Panel2.Controls.Add(this.labelNumberFilesInFolder);
+            this.splitContainer.Panel2.Controls.Add(this.labelTextFileOrDir);
             this.splitContainer.Panel2.Controls.Add(this.labelNameFileOrDir);
             this.splitContainer.Panel2.Controls.Add(this.listView);
             this.splitContainer.Size = new System.Drawing.Size(741, 651);
             this.splitContainer.SplitterDistance = 247;
             this.splitContainer.TabIndex = 3;
             // 
+            // labelTextFileOrDir
+            // 
+            this.labelTextFileOrDir.AutoSize = true;
+            this.labelTextFileOrDir.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.labelTextFileOrDir.Location = new System.Drawing.Point(11, 576);
+            this.labelTextFileOrDir.Name = "labelTextFileOrDir";
+            this.labelTextFileOrDir.Size = new System.Drawing.Size(0, 13);
+            this.labelTextFileOrDir.TabIndex = 3;
+            // 
             // labelNameFileOrDir
             // 
             this.labelNameFileOrDir.AutoSize = true;
-            this.labelNameFileOrDir.Location = new System.Drawing.Point(21, 557);
+            this.labelNameFileOrDir.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.labelNameFileOrDir.Location = new System.Drawing.Point(11, 561);
             this.labelNameFileOrDir.Name = "labelNameFileOrDir";
             this.labelNameFileOrDir.Size = new System.Drawing.Size(0, 13);
             this.labelNameFileOrDir.TabIndex = 2;
+            // 
+            // labelNumberFilesInFolder
+            // 
+            this.labelNumberFilesInFolder.AutoSize = true;
+            this.labelNumberFilesInFolder.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.labelNumberFilesInFolder.Location = new System.Drawing.Point(11, 591);
+            this.labelNumberFilesInFolder.Name = "labelNumberFilesInFolder";
+            this.labelNumberFilesInFolder.Size = new System.Drawing.Size(0, 13);
+            this.labelNumberFilesInFolder.TabIndex = 4;
             // 
             // MainForm
             // 
@@ -193,6 +216,8 @@
         private System.Windows.Forms.ToolStripMenuItem detailsToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.Label labelNameFileOrDir;
+        private System.Windows.Forms.Label labelTextFileOrDir;
+        private System.Windows.Forms.Label labelNumberFilesInFolder;
     }
 }
 
