@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.richTextBox = new System.Windows.Forms.RichTextBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -71,6 +70,7 @@
             // 
             // richTextBox
             // 
+            this.richTextBox.ContextMenuStrip = this.contextMenuStripForRichTextBox;
             this.richTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox.Location = new System.Drawing.Point(0, 49);
             this.richTextBox.Name = "richTextBox";
@@ -78,6 +78,7 @@
             this.richTextBox.TabIndex = 0;
             this.richTextBox.Text = "";
             this.richTextBox.TextChanged += new System.EventHandler(this.richTextBox_TextChanged);
+            this.richTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.richTextBox_KeyPress);
             // 
             // openFileDialog
             // 
@@ -235,68 +236,73 @@
             // 
             // toolStripButtonOpen
             // 
-            this.toolStripButtonOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonOpen.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonOpen.Image")));
+            this.toolStripButtonOpen.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonOpen.Image = global::Task_2_TextEditor.Properties.Resources.open;
             this.toolStripButtonOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonOpen.Name = "toolStripButtonOpen";
-            this.toolStripButtonOpen.Size = new System.Drawing.Size(37, 22);
+            this.toolStripButtonOpen.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonOpen.Text = "Open";
             this.toolStripButtonOpen.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // toolStripButtonSave
             // 
-            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonSave.Image")));
+            this.toolStripButtonSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSave.Image = global::Task_2_TextEditor.Properties.Resources.save;
             this.toolStripButtonSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonSave.Name = "toolStripButtonSave";
-            this.toolStripButtonSave.Size = new System.Drawing.Size(35, 22);
+            this.toolStripButtonSave.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonSave.Text = "Save";
             this.toolStripButtonSave.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // toolStripButtonNewFile
             // 
-            this.toolStripButtonNewFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonNewFile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonNewFile.Image")));
+            this.toolStripButtonNewFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonNewFile.Image = global::Task_2_TextEditor.Properties.Resources._new;
             this.toolStripButtonNewFile.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonNewFile.Name = "toolStripButtonNewFile";
-            this.toolStripButtonNewFile.Size = new System.Drawing.Size(32, 22);
+            this.toolStripButtonNewFile.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonNewFile.Text = "New";
+            this.toolStripButtonNewFile.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // toolStripButtonCopy
             // 
-            this.toolStripButtonCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonCopy.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonCopy.Image")));
+            this.toolStripButtonCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonCopy.Image = global::Task_2_TextEditor.Properties.Resources.copy;
             this.toolStripButtonCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonCopy.Name = "toolStripButtonCopy";
-            this.toolStripButtonCopy.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButtonCopy.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonCopy.Text = "Copy";
+            this.toolStripButtonCopy.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // toolStripButtonCut
             // 
-            this.toolStripButtonCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonCut.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonCut.Image")));
+            this.toolStripButtonCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonCut.Image = global::Task_2_TextEditor.Properties.Resources.cut;
             this.toolStripButtonCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonCut.Name = "toolStripButtonCut";
-            this.toolStripButtonCut.Size = new System.Drawing.Size(28, 22);
+            this.toolStripButtonCut.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonCut.Text = "Cut";
+            this.toolStripButtonCut.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
             // toolStripButtonPaste
             // 
-            this.toolStripButtonPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonPaste.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonPaste.Image")));
+            this.toolStripButtonPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonPaste.Image = global::Task_2_TextEditor.Properties.Resources.paste;
             this.toolStripButtonPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonPaste.Name = "toolStripButtonPaste";
-            this.toolStripButtonPaste.Size = new System.Drawing.Size(38, 22);
+            this.toolStripButtonPaste.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonPaste.Text = "Paste";
+            this.toolStripButtonPaste.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // toolStripButtonUndo
             // 
-            this.toolStripButtonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButtonUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButtonUndo.Image")));
+            this.toolStripButtonUndo.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonUndo.Image = global::Task_2_TextEditor.Properties.Resources.undo;
             this.toolStripButtonUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButtonUndo.Name = "toolStripButtonUndo";
-            this.toolStripButtonUndo.Size = new System.Drawing.Size(36, 22);
+            this.toolStripButtonUndo.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonUndo.Text = "Undo";
+            this.toolStripButtonUndo.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
             // contextMenuStripForRichTextBox
             // 
@@ -315,18 +321,21 @@
             this.copyContextStripMenuItem.Name = "copyContextStripMenuItem";
             this.copyContextStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.copyContextStripMenuItem.Text = "Copy";
+            this.copyContextStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // cutContextStripMenuItem
             // 
             this.cutContextStripMenuItem.Name = "cutContextStripMenuItem";
             this.cutContextStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.cutContextStripMenuItem.Text = "Cut";
+            this.cutContextStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
             // pasteContextStripMenuItem
             // 
             this.pasteContextStripMenuItem.Name = "pasteContextStripMenuItem";
             this.pasteContextStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.pasteContextStripMenuItem.Text = "Paste";
+            this.pasteContextStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // toolStripMenuItem5
             // 
@@ -338,6 +347,7 @@
             this.undoContextStripMenuItem.Name = "undoContextStripMenuItem";
             this.undoContextStripMenuItem.Size = new System.Drawing.Size(101, 22);
             this.undoContextStripMenuItem.Text = "Undo";
+            this.undoContextStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
             // MainForm
             // 

@@ -248,10 +248,6 @@ namespace Task_2_TextEditor
             this.richTextBox.Text = this.bufferTextBoxText;
         }
 
-        private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
 
         private void richTextBox_TextChanged(object sender, EventArgs e)
         {
