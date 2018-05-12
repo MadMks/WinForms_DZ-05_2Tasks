@@ -49,7 +49,27 @@ namespace Task_2_TextEditor
 
             if (fileNames != null)
             {
+                this.dialogResult = this.AskWhetherToSaveTheChanges();
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    this.saveToolStripMenuItem_Click(sender, e);
+                }
+                else if (dialogResult == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                this.Text = fileNames[0];
+
+                this.openFilePath = fileNames[0];
+
                 richTextBox.LoadFile(fileNames[0], RichTextBoxStreamType.PlainText);
+
+                if (this.Text[0] == '*')
+                {
+                    this.Text = this.Text.Substring(1);
+                }
             }
         }
 
@@ -194,18 +214,7 @@ namespace Task_2_TextEditor
             }
         }
 
-        private void richTextBox_TextChanged(object sender, EventArgs e)
-        {
-            if (this.Text == "Текстовый редактор")
-            {
-                this.Text = "*Новый файл";
 
-            }
-            else if (this.Text[0] != '*')
-            {
-                this.Text = "*" + this.Text;
-            }
-        }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -242,6 +251,19 @@ namespace Task_2_TextEditor
         private void menuStrip_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void richTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (this.Text == "Текстовый редактор")
+            {
+                this.Text = "*Новый файл";
+
+            }
+            else if (this.Text[0] != '*')
+            {
+                this.Text = "*" + this.Text;
+            }
         }
     }
 }
