@@ -16,7 +16,7 @@ namespace Task_2_TextEditor
         /// <summary>
         /// Путь открытого файла.
         /// </summary>
-        //private string openFilePath;
+        private string openFilePath;
 
         public MainForm()
         {
