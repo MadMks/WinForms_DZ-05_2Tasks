@@ -267,6 +267,7 @@ namespace Task_1_Explorer
                     if (Directory.Exists(fullPath) == true)
                     {
                         this.labelTextFileOrDir.Text = "Папка с файлами";
+                        this.labelSizeFileValue.Text = "";
 
                         string[] files = Directory.GetFiles(fullPath);
                         this.labelNumberFilesInFolder.Text 
